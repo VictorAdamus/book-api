@@ -72,7 +72,7 @@ const Home = observer(() => {
                       height={150}
                     />
                     <span className="text-xs text-slate-400 underline mb-2">{book.volumeInfo.categories? book.volumeInfo.categories[0] : 'unwnown'}</span>
-                    <p className="font-bold text-xs mb-4">
+                    <p className="font-bold text-xs mb-4 text-clip">
                       {book.volumeInfo.title}
                     </p>
                     <span className="text-xs text-slate-400 mt-auto">
