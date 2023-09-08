@@ -16,9 +16,7 @@ const Header = observer( () => {
     setInputValue(e.target.value)
   }
 
-  console.log('inner', selectValueFilter);
   
-
   const toogleSelectFilter =(event:ChangeEvent<HTMLSelectElement>)=>{
     setSelectValueFilter(event.target.value)
     books.selectCategory(event.target.value)
@@ -36,8 +34,8 @@ const Header = observer( () => {
 
   return (
    
-      <header className="w-full bg-[url(./image/bg-main.jpg)] bg-center bg-cover bg-no-repeat p-4 md:p-10 max-[420px]:p-0 max-[420px]:pb-4  border-b border-black">
-        <h1 className="text-3xl text-white font-bold tracking-wider max-[420px]:text-lg">
+      <header className="w-full bg-[url(./image/bg-main.jpg)] bg-center bg-cover bg-no-repeat p-4 md:p-10 max-[420px]:p-0 max-[420px]:py-4  border-b border-black">
+        <h1 className="text-3xl text-white font-bold tracking-wider max-[420px]:text-lg max-[420px]:text-center" >
           Search for books
         </h1>
         <form className="w-full p-4 py-8  md:p-10 bg-black/50 flex flex-col text-xs md:text-sm items-center justify-start gap-4 mb-4">
@@ -72,9 +70,9 @@ const Header = observer( () => {
             </div>
           </div>
         </form>
-        <div className="flex items-center justify-center text-indigo-700">
+        <div className="flex items-center justify-center text-black">
         {books.booksCount > 1 ? (
-          <span>Found <span className="text-xl font-extrabold">{books.booksCount}</span> books</span>
+          <span>Found <span className="text-xl font-extrabold text-indigo-500">{books.booksCount}</span> books</span>
         ) : (
           <span>Found <span className="text-xl font-extrabold">{books.booksCount}</span> book</span>
         )}

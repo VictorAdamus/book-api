@@ -22,6 +22,7 @@ class BooksStore {
     bookPage: Book | undefined = undefined;
     startIndex: number = 0
     bookCategory: string = 'All'
+    timeout:boolean = false
     constructor(){
         makeAutoObservable(this, {}, {deep: true})
     }
@@ -37,21 +38,20 @@ class BooksStore {
     }
 
     async fetchBooks(){
+        this.booksList = []
+        this.timeout = true
         try {
             const response = await axios
             .get(`https://www.googleapis.com/books/v1/volumes?q=${this.titleBook}&startIndex=0&maxResults=30&printType=books&filter=full&key=AIzaSyD5WLMaiuW-Dih_L3vmypVHv8max2_-vmU`)
-            console.log(response.data.items);
-            
+            let res = null
             if (this.bookCategory !== 'All'){
-              
-                
-                const res = response.data.items.filter((book:Book)=>book.volumeInfo.categories && (book.volumeInfo.categories[0] === this.bookCategory) )
-                this.setSearchResults(res)
+                res = response.data.items.filter((book:Book)=>book.volumeInfo.categories && (book.volumeInfo.categories[0] === this.bookCategory) )
+
             } else if(this.bookCategory == 'All') {
-                const res = [...response.data.items]
-                
-                this.setSearchResults(res)
+                res = response.data.items
             }
+            this.timeout = false
+            this.setSearchResults(res)
 
         } catch (error) {
             console.error(error)
@@ -59,7 +59,6 @@ class BooksStore {
     };
 
     async loadMoreBooks(){
-        console.log('loadMoreeee',this.bookCategory);
         
         try {
             const response = await axios
@@ -86,7 +85,7 @@ class BooksStore {
     }
 
     sortingBooks(payload:string){
-        if(payload === 'newest') {
+        if(payload === 'newest') { //сортировка по дате выпуска, сверху новые издания
             this.booksList.sort((bookA:Book, bookB:Book)=>{
                 const a = bookA.volumeInfo.publishedDate
                 const numA = parseInt(a.replace(/-/g, ""))
@@ -94,11 +93,10 @@ class BooksStore {
                 const numB = parseInt(b.replace(/-/g, ""))
                 return numB - numA
             })
-        } else if(payload === 'alphabet'){
+        } else if(payload === 'alphabet'){ //сортировка в алфавитном порядке
             this.booksList.sort((bookA:Book, bookB:Book)=>(bookA.volumeInfo.title > bookB.volumeInfo.title ? 1 : -1)
             )
         }
-        console.log(this.booksList);
         
     }
     
